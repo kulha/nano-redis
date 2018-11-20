@@ -11,4 +11,6 @@ RUN powershell -Command \
     Expand-Archive redis.zip . ; \
     Remove-Item redis.zip -Force
 
+EXPOSE 6379
+
 ENTRYPOINT [ "redis-server" ]
