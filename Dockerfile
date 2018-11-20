@@ -7,11 +7,14 @@ RUN mkdir C:\redis
 # make this directory as working directory for following commands
 WORKDIR C:/redis
 
-# copy and execute custom powershell script
-COPY redis.conf.ps1 c:/redis
-# this script contains commands to modify redis server config file to turn
+# modify redis server config file to turn
 # off protected mode and allow all ip addresses to connect to the server
-RUN powershell.exe -executionpolicy bypass ./redis.conf.ps1
+RUN powershell -executionpolicy bypass -Command "\
+    Get-Content redis.windows.conf | Where { $_ -notmatch 'bind 127.0.0.1' } | Set-Content redis.openport.conf ; \
+    Get-Content redis.openport.conf | Where { $_ -notmatch 'protected-mode yes' } | Set-Content redis.unprotected.conf ; \
+    Add-Content redis.unprotected.conf 'protected-mode no' ; \
+    Add-Content redis.unprotected.conf 'bind 0.0.0.0' ; \
+    Get-Content redis.unprotected.conf"
 
 # Download and install a Dependency
 RUN powershell -Command \
