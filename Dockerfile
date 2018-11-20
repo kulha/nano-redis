@@ -1,6 +1,9 @@
 # Use an existing docker image as base
 FROM microsoft/nanoserver
 
+# Create a directory for redis server
+RUN mkdir C:\redis
+
 # Download and install a Dependency
 RUN powershell -Command \
     $ErrorActionPreference = 'Stop'; \
