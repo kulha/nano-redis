@@ -25,4 +25,9 @@ RUN powershell -Command \
 
 EXPOSE 6379
 
-ENTRYPOINT [ "redis-server" ]
+# Tell this new image what to do when it starts 
+# as a container
+CMD powershell -Command \
+    .\\redis-server.exe .\\redis.unprotected.conf --port 6379 ; \
+    Write-Host Redis Started... ; \
+    while ($true) { Start-Sleep -Seconds 3600 }
