@@ -4,6 +4,9 @@ FROM microsoft/nanoserver
 # Create a directory for redis server
 RUN mkdir C:\redis
 
+# make this directory as working directory for following commands
+WORKDIR C:/redis
+
 # Download and install a Dependency
 RUN powershell -Command \
     $ErrorActionPreference = 'Stop'; \
